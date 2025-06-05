@@ -56,7 +56,7 @@
 
 پایتون (Python 3.6+) نصب شده روی سیستم شما.
 دو کتابخانه که با دستور زیر به راحتی نصب می‌شوند:
-Bash
+
 
 pip install arabic-reshaper python-bidi
 
@@ -71,9 +71,10 @@ pip install arabic-reshaper python-bidi
 
 ترمینال یا Command Prompt را باز کرده، به پوشه پروژه بروید و اسکریپت را با دستور زیر اجرا کنید:
 
-Bash
 
 python formatter.py
+
+
 (اگر نام اسکریپت را چیز دیگری گذاشته‌اید، آن را جایگزین formatter.py کنید)
 
 
