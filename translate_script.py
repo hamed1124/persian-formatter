@@ -1,7 +1,6 @@
 import os
 import arabic_reshaper
 from bidi.algorithm import get_display
-import re
 
 # نام پوشه‌های ورودی و خروجی
 INPUT_FOLDER = 'input'
@@ -12,21 +11,24 @@ def process_line_for_game(line):
     این تابع یک خط از فایل yml را پردازش می‌کند، بخش فارسی را پیدا کرده،
     آن را به فرمت بصری مخصوص بازی تبدیل می‌کند و خط جدید را برمی‌گرداند.
     """
-    # برای جلوگیری از پردازش خطوطی که متن ندارند
+    # برای جلوگیری از پردازش خطوطی که متن ندارند (مانند خطوط خالی یا کامنت‌ها)
     if ':' not in line or '"' not in line:
         return line
 
-    # جدا کردن کلید و مقدار
+    # جدا کردن کلید (key) و مقدار (value)
     parts = line.split(':', 1)
     key = parts[0]
-    value_part = parts[1].strip()
+    value_part = parts[1]
 
-    # فقط مقادیر داخل دابل کوتیشن " " را پردازش می‌کنیم
-    if value_part.startswith('"') and value_part.endswith('"'):
+    # پیدا کردن متن داخل دابل کوتیشن " "
+    start_quote_index = value_part.find('"')
+    end_quote_index = value_part.rfind('"')
+
+    if start_quote_index != -1 and end_quote_index > start_quote_index:
         # استخراج متن اصلی (ممکن است حاوی متغیرهای بازی مثل $VAR$ باشد)
-        text_to_format = value_part[1:-1]
+        text_to_format = value_part[start_quote_index + 1 : end_quote_index]
         
-        # اگر متن خالی است، کاری انجام نده
+        # اگر متن خالی است یا فقط حاوی متغیر است، کاری انجام نده
         if not text_to_format.strip():
             return line
 
@@ -37,9 +39,13 @@ def process_line_for_game(line):
         bidi_text = get_display(reshaped_text)
         
         # بازسازی خط با مقدار فرمت شده
-        # فضاهای خالی انتهای خط (مثل newline) را حفظ می‌کنیم
-        trailing_whitespace = parts[1][len(parts[1].rstrip()):]
-        return f'{key}: "{bidi_text}"{trailing_whitespace}'
+        # بخش‌های قبل و بعد از کوتیشن‌ها حفظ می‌شوند (برای حفظ فاصله‌ها و ...)
+        before_quote = value_part[:start_quote_index + 1]
+        after_quote = value_part[end_quote_index:]
+        
+        new_value_part = f"{before_quote}{bidi_text}{after_quote}"
+        
+        return f"{key}:{new_value_part}"
         
     return line
 
