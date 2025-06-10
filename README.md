@@ -72,7 +72,7 @@ pip install arabic-reshaper python-bidi
 python formatter.py
 ```
 
-(اگر نام اسکریپت را چیز دیگری گذاشته‌اید، آن را جایگزین formatter.py کنید)
+(اگر نام اسکریپت را چیز دیگری گذاشته‌اید، آن را جایگزین translate_script.py کنید)
 
 
 
