@@ -6,7 +6,7 @@
 این پروژه یک اسکریپت پایتون است که برای حل مشکل نمایش متون فارسی در بازی‌های استراتژی شرکت پارادوکس (Paradox Interactive) مانند Crusader Kings III, Victoria 3, Europa Universalis IV و Hearts of Iron IV طراحی شده است.
  
 
-  
+---  
 
 
 مشکل چیست؟
